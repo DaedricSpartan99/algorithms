@@ -143,6 +143,42 @@ class BinTree:
             y.left = z
         else:               # emplace z on right side
             y.right = z
+    
+    # transplant node u and replace with v
+    def transplant(self, u, v):
+        p = u.parent
 
+        if p is None:
+            self.root = v    # replace root if u is root
 
+        # identify if u belongs to left or right, then replace with the correct one
+        elif u == p.left:
+            p.left = v 
+        else:
+            p.right = v
 
+        if v is not None:
+            v.parent = p     # assign same parent as u
+
+    # delete a node z
+    def delete(self, z):
+        if z.left is None:  # no left child
+            self.transplant(z, z.right) # just replace with right one
+
+        elif z.right is None: # only left child
+            self.transplant(z, z.left) # just replace with left one
+
+        else:  # two children
+            self.delete_with_two_children(z)
+
+    def delete_with_two_children(self, z):
+        y = z.right.minimum() # find minimum over right child
+
+        if y.parent != z: # if y is not a direct child of z
+            self.transplant(y, y.right) # make y the z.right subtree root
+            y.right = z.right
+            y.right.parent = y
+
+        self.transplant(z, y) # replace z with y
+        y.left = z.left  # fix dependencies
+        y.left.parent = y
