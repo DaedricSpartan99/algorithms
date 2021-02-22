@@ -56,3 +56,20 @@ class Queue:
         else:
             return self.A[self.back-1]
 
+from linklist import LinkedList, LinkedListIterator
+
+class LinkedQueue:
+    def __init__(self):
+        LinkedList.__init__(self)
+
+    def enqueue(self, x):
+        LinkedList.insert(self, LinkedListIterator(x))
+
+    def dequeue(self):
+        x = self.head.key
+        LinkedList.delete(self, self.head)
+        return x
+
+    def empty(self):
+        return self.head is None
+

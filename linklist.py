@@ -1,5 +1,5 @@
 class LinkedListIterator:
-    def __init__(self, key, previous, next_):
+    def __init__(self, key, previous = None, next_ = None):
         # stored key
         self.key = key
         # previous pointer in the list
@@ -7,6 +7,12 @@ class LinkedListIterator:
         # next pointer in the list
         self.nextptr = next_
 
+    def __next__(self):
+        if self.nextptr is None:
+            raise StopIteration
+        return self.nextptr
+
+    next = __next__ # python2.x compatibility
 
 class LinkedList:
     def __init__(self):
@@ -56,4 +62,7 @@ class LinkedList:
         if x.nextptr is not None:
             x.nextptr.prevptr = x.prevptr
 
+    def __iter__(self):
+        # iterable object
+        return self.head if self.head is not None else []
 
